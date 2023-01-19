@@ -17,28 +17,27 @@ const App = () => {
   const [largeImageUrl, setLargeImageUrl] = useState('');
 
   useEffect(() => {
+    const makeApiCall = () => {
+      if (!query) {
+        return;
+      }
+      const PER_PAGE = 12;
+      const API_KEY = '30622071-b7f240b19c0374f09e6aee33e';
+      const searchUrl = `https://pixabay.com/api/?q=${encodeURIComponent(
+        query
+      )}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=${PER_PAGE}`;
+
+      setIsLoading(true);
+      axios.get(searchUrl).then(response => {
+        const totalPages = Math.round(response.data.totalHits / PER_PAGE);
+        const loadedImages = response.data.hits;
+        setTotalPages(totalPages);
+        setImages(prevImages => [...prevImages, ...loadedImages]);
+        setIsLoading(false);
+      });
+    };
     makeApiCall();
   }, [query, page]);
-
-  const makeApiCall = () => {
-    if (!query) {
-      return;
-    }
-    const PER_PAGE = 12;
-    const API_KEY = '30622071-b7f240b19c0374f09e6aee33e';
-    const searchUrl = `https://pixabay.com/api/?q=${encodeURIComponent(
-      query
-    )}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=${PER_PAGE}`;
-
-    setIsLoading(true);
-    axios.get(searchUrl).then(response => {
-      const totalPages = Math.round(response.data.totalHits / PER_PAGE);
-      const loadedImages = response.data.hits;
-      setTotalPages(totalPages);
-      setImages(prevImages => [...prevImages, ...loadedImages]);
-      setIsLoading(false);
-    });
-  };
 
   const handleSearch = searchValue => {
     if (searchValue !== '') {
