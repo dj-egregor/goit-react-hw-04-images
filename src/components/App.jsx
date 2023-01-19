@@ -21,6 +21,7 @@ const App = () => {
       if (!query) {
         return;
       }
+
       const PER_PAGE = 12;
       const API_KEY = '30622071-b7f240b19c0374f09e6aee33e';
       const searchUrl = `https://pixabay.com/api/?q=${encodeURIComponent(
