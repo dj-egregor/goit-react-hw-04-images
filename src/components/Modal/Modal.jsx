@@ -3,18 +3,18 @@ import css from './Modal.module.css';
 import PropTypes from 'prop-types';
 
 const Modal = props => {
-  const handleKeyPress = event => {
-    if (event.keyCode === 27) {
-      props.onClose();
-    }
-  };
-
   useEffect(() => {
+    const handleKeyPress = event => {
+      if (event.keyCode === 27) {
+        props.onClose();
+      }
+    };
+
     document.addEventListener('keydown', handleKeyPress);
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
-  }, []);
+  }, [props]);
 
   return (
     <div id="modal" onClick={props.onClickClose} className={css.Overlay}>
